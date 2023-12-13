@@ -62,6 +62,9 @@ def prep_zillow(zillow):
 # Rename the columns
     zillow.rename(columns=new_column_names, inplace=True)
     zillow = zillow.dropna()
+    class_mapping = {6037: 'LA County', 6059: 'Orange County', 6111: 'Ventura County'}
+    zillow['FIPS'] = zillow['FIPS'].replace(class_mapping)
+    
     return zillow
 
 
