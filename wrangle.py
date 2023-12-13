@@ -28,7 +28,6 @@ def get_zillow():
 select properties_2017.bedroomcnt,
 properties_2017.bathroomcnt,
 properties_2017.calculatedfinishedsquarefeet,
-properties_2017.structuretaxvaluedollarcnt,
 properties_2017.taxvaluedollarcnt,
 properties_2017.yearbuilt,
 properties_2017.taxamount,
@@ -51,7 +50,6 @@ def prep_zillow(zillow):
     'bedroomcnt': 'Bedroom Count',
     'bathroomcnt': 'Bathroom Count',
     'calculatedfinishedsquarefeet': 'Finished Square Feet',
-    'structuretaxvaluedollarcnt': 'Structure Tax Value',
     'taxvaluedollarcnt': 'Tax Value',
     'yearbuilt': 'Year Built',
     'taxamount': 'Tax Amount',
@@ -70,7 +68,6 @@ def prep_zillow(zillow):
 
 
 def split_zillow(zillow):
-    target_variable = 'Tax Value'
 
 # First split
     train, validate_test = train_test_split(zillow, 
