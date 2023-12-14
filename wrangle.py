@@ -2,7 +2,7 @@
 import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
-
+from sklearn.preprocessing import QuantileTransformer
 
 def get_zillow():
 
@@ -35,6 +35,7 @@ properties_2017.fips,
 propertylandusetype.propertylandusedesc
 from properties_2017
 join propertylandusetype using(propertylandusetypeid)
+where propertylandusetype.propertylandusedesc = 'Single Family Residential'
 '''
 , url)
 
@@ -82,3 +83,20 @@ def split_zillow(zillow):
                                  )
     
     return train, validate, test
+
+def scaling(train,validate,test):
+    X_train = train.drop(columns=['Tax Value','FIPS','Property Land Use'])
+    y_train = train['Tax Value']
+    
+    X_val= validate.drop(columns=['Tax Value','FIPS','Property Land Use'])
+    y_val = validate['Tax Value']
+    
+    X_test = test.drop(columns=['Tax Value','FIPS','Property Land Use'])
+    y_test = test['Tax Value']
+
+    scaler = QuantileTransformer(n_quantiles=1000, random_state=123)
+    train_scaled = pd.DataFrame(scaler.fit_transform(X_train), columns = X_train.columns)
+    val_scaled = pd.DataFrame(scaler.transform(X_val), columns = X_val.columns)
+    test_scaled = pd.DataFrame(scaler.transform(X_test), columns = X_test.columns)
+
+    return train_scaled,val_scaled,test_scaled
