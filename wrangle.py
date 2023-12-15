@@ -2,7 +2,7 @@
 import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import QuantileTransformer
+from sklearn.preprocessing import MinMaxScaler
 
 def get_zillow():
 
@@ -85,17 +85,18 @@ def split_zillow(zillow):
     return train, validate, test
 
 def scaling(train,validate,test):
-    X_train = train.drop(columns=['Tax Value','FIPS','Property Land Use'])
+    X_train = train.drop(columns=['Tax Value','FIPS','Property Land Use','Year Built'])
     y_train = train['Tax Value']
     
-    X_val= validate.drop(columns=['Tax Value','FIPS','Property Land Use'])
+    X_val= validate.drop(columns=['Tax Value','FIPS','Property Land Use','Year Built'])
     y_val = validate['Tax Value']
     
-    X_test = test.drop(columns=['Tax Value','FIPS','Property Land Use'])
+    X_test = test.drop(columns=['Tax Value','FIPS','Property Land Use','Year Built'])
     y_test = test['Tax Value']
 
-    scaler = QuantileTransformer(n_quantiles=1000, random_state=123)
-    train_scaled = pd.DataFrame(scaler.fit_transform(X_train), columns = X_train.columns)
+    scaler = MinMaxScaler()
+    scaler.fit(X_train)
+    train_scaled = pd.DataFrame(scaler.transform(X_train), columns = X_train.columns)
     val_scaled = pd.DataFrame(scaler.transform(X_val), columns = X_val.columns)
     test_scaled = pd.DataFrame(scaler.transform(X_test), columns = X_test.columns)
 
