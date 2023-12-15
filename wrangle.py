@@ -68,10 +68,10 @@ def prep_zillow(zillow):
 
 
 
-def split_zillow(zillow):
+def split_df(df):
 
 # First split
-    train, validate_test = train_test_split(zillow, 
+    train, validate_test = train_test_split(df, 
                                         train_size=0.60,
                                         random_state=123,
                                         )
